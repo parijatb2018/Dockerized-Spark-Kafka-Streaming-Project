@@ -2,4 +2,4 @@ docker rm -f $(docker ps -aq)
 
 cd ~/bitnami/kafka
 
-sudo rm rf *
+sudo rm -rf config/ data/
