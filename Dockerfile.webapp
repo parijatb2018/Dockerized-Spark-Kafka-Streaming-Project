@@ -1,0 +1,17 @@
+FROM ubuntu:20.04
+ADD ./flask /app
+# COPY entrypoint.sh .
+# COPY requirements.txt .
+RUN apt-get update && apt-get install -y iputils-ping  
+RUN apt-get update -y 
+RUN apt-get install -y python3.8 python3.8-dev
+RUN apt-get install -y python3-pip
+RUN pip install --upgrade pip
+WORKDIR /app
+RUN pip install -r requirements.txt
+EXPOSE 80
+ENTRYPOINT ["tail", "-f", "/dev/null"]
+
+# CMD gunicorn app:app -b 0.0.0.0:80 -w 1 -k gevent
+#gunicorn app:app -b 0.0.0.0:80 -w 1 -k gevent
+#https://cloud.google.com/run/docs/quickstarts/build-and-deploy/deploy-python-service

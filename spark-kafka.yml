@@ -1,0 +1,121 @@
+version: '3'
+
+networks:
+  common-network:
+    driver: bridge
+
+services:
+  spark:
+    image: docker.io/bitnami/spark:3.3
+    container_name: spark-master
+    networks:
+      - common-network
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    ports:
+      - '8080:8080'
+    volumes:
+      # - ~/bitnami/app/:/docker-app/
+      - ~/scala/custom-docker-compose:/docker-app
+  spark-worker:
+    image: docker.io/bitnami/spark:3.3
+    container_name: spark-worker-1
+    # depends_on:
+    #   - spark
+    networks:
+      - common-network
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=1
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    ports:
+      - '8081:8081'
+    # volumes:
+    #   #  - ./apps:/opt/spark-apps
+    #   #  - ./data:/opt/spark-data
+    #   - ~/bitnami/app/:/docker-app/
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.8
+    container_name: zookeeper
+    networks:
+      - common-network
+    ports:
+      - "2181:2181"
+    # volumes:
+    #   - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: docker.io/bitnami/kafka:3.3
+    container_name: kafka
+    networks:
+      - common-network
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    volumes:
+      - ~/bitnami/kafka:/bitnami/kafka
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      # - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:SSL,CLIENT:SASL_SSL
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,CLIENT:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=INTERNAL://:9093,CLIENT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://kafka:9093,CLIENT://kafka:9092
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - BITNAMI_DEBUG=true
+
+      # - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      # - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:9093
+      # - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092,EXTERNAL://localhost:9093
+      # - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+
+      # - KAFKA_BROKER_ID=1
+      # - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      # - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      # - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      # - ALLOW_PLAINTEXT_LISTENER=yes
+
+    depends_on:
+      - zookeeper
+
+  producer:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.producer
+    container_name: producer
+    # depends_on:
+    #   - kafka
+    networks:
+      - common-network
+    volumes: 
+      - ~/scala/custom-docker-compose:/docker-app
+
+  # docker-compose up --scale spark-worker=3
+  #https://github.com/conduktor/kafka-stack-docker-compose
+
+  flask-app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.webapp
+    container_name: flask-app
+    # depends_on:
+    #   - kafka
+    ports: 
+      - 5000:80
+    networks:
+      - common-network
+    volumes: 
+      - ~/scala/custom-docker-compose/flask:/app
+
+  
+

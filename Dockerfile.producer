@@ -1,0 +1,28 @@
+# FROM python:3.8-slim
+
+# ADD . /app
+# #RUN mkdir /app/producer/__logger/
+
+# WORKDIR /app
+
+# RUN pip install --upgrade pip
+
+# RUN pip install -r requirements.txt
+
+# CMD ["python", "kafka_producer.py"]
+
+FROM ubuntu:20.04
+COPY ./kafka_producer.py .
+COPY entrypoint.sh .
+COPY requirements.txt .
+RUN apt-get update && apt-get install -y iputils-ping  
+RUN apt-get update -y 
+RUN apt-get install -y python3.8 python3.8-dev
+RUN apt-get install -y python3-pip
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+# CMD bash
+ENTRYPOINT ["tail", "-f", "/dev/null"]
+# CMD ["python3", "./docker-app/kafka_producer.py"]
+# CMD /docker-app/entrypoint.sh
+# CMD ["run"]
