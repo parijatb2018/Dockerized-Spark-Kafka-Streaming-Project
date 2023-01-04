@@ -27,8 +27,11 @@ producer=KafkaProducer(bootstrap_servers=['kafka:9092'])
 # time.sleep(5)
 
 fake=Faker()
+# names=['Ajay','Raghav','Suvo','Ashim','Raju','Tanmoy','Kamal','Satyajit']
+# a2,r2,s2,t1,k1
 d={}
 while True:
+# for name in names:
     name=fake.name()
     # print(name)
     name_first_letter=name[0]
@@ -37,7 +40,8 @@ while True:
         d[name_first_letter]+=1
     else:
         d[name_first_letter]=1
-    print(d)
+    d_sorted=dict(sorted(d.items()))
+    print(d_sorted)
     producer.send('rockthejvm',name.encode('utf-8'))
     
     time.sleep(1)

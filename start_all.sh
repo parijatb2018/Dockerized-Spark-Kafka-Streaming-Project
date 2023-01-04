@@ -1,0 +1,1 @@
+docker-compose -f spark-kafka.yml up -d

@@ -20,7 +20,10 @@ services:
       - '8080:8080'
     volumes:
       # - ~/bitnami/app/:/docker-app/
+      -  ~/scala/custom-docker-compose/spark-config/spark-defaults.conf:/opt/bitnami/spark/conf/spark-defaults.conf
       - ~/scala/custom-docker-compose:/docker-app
+      - ~/scala/custom-docker-compose/jar_dir:/opt/bitnami/spark/ivy
+      - ~/scala/custom-docker-compose/checkpoint:/opt/bitnami/spark/checkpoint
   spark-worker:
     image: docker.io/bitnami/spark:3.3
     container_name: spark-worker-1
@@ -51,7 +54,7 @@ services:
     ports:
       - "2181:2181"
     # volumes:
-    #   - "zookeeper_data:/bitnami"
+    #   - ~/bitnami/zookeper:/bitnami/zookeeper
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
   kafka:
@@ -116,6 +119,24 @@ services:
       - common-network
     volumes: 
       - ~/scala/custom-docker-compose/flask:/app
+  
+  mysql:
+    image: mysql
+    container_name: mysql-server
+    restart: always
+    environment:
+      MYSQL_DATABASE: viz
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - 3308:3306
+    networks:
+      - common-network
+    volumes:
+      - ~/mysql-backup:/var/lib/mysql
+
+
+
+
 
   
 

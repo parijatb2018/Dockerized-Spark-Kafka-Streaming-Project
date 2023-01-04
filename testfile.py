@@ -98,15 +98,15 @@ time.sleep(1)
 
 # df_kafka.withColumn('nameFirstLetter',substring(expr("cast(value as string) as value"),0,1))
 
-df_stats=df_kafka.withColumn('nameFirstLetter',substring(expr("cast(value as string) as value"),0,1))\
+df_intermediate=df_kafka.withColumn('nameFirstLetter',substring(expr("cast(value as string) as value"),0,1))\
                  .select(col('nameFirstLetter'),col('timestamp').alias('eventTime'))\
                  .groupBy(window(col('eventTime'),'1 day').alias('timeWindow'),col('nameFirstLetter')) \
                  .agg(count('nameFirstLetter').alias('nameCountTotal'))\
                  .select(col('timeWindow').getField('start').alias('start'), \
                          col('timeWindow').getField('end').alias('end'),\
                          col('nameFirstLetter'),\
-                         col('nameCountTotal'))\
-                 .orderBy(col('nameFirstLetter'))
+                         col('nameCountTotal')) #\
+                #  .orderBy(col('nameFirstLetter'))
                  #.orderBy(col('nameCountTotal').desc())
 
 
@@ -121,13 +121,15 @@ df_stats=df_kafka.withColumn('nameFirstLetter',substring(expr("cast(value as str
 
 # time.sleep(10)
 
+df_stats=df_intermediate.select(col('nameFirstLetter').alias('key'),expr('cast(nameCountTotal as string) as value'))
 
-df_stats.select(col('nameFirstLetter').alias('key'),expr('cast(nameCountTotal as string) as value')) \
+
+df_stats\
   .writeStream \
   .format('kafka')\
   .option('kafka.bootstrap.servers', 'kafka:9092') \
   .option('topic', 'stats') \
   .option('checkpointLocation','checkpoint')\
-  .outputMode("complete")\
+  .outputMode("update")\
   .start()\
   .awaitTermination()

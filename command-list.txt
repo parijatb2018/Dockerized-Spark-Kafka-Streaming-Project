@@ -1,0 +1,48 @@
+./bin/spark-submit --class part6practical.TestApp --deploy-mode client --master spark://1ca0f6a20051:7077 --verbose --supervise /docker-app/spark-essentials.jar /docker-app/movies.json /docker-app/goodComedies
+
+
+./bin/spark-submit --class Main --deploy-mode client --master spark://1ca0f6a20051:7077 --verbose --supervise /docker-app/sparkexamples.jar 
+
+./bin/spark-submit --class part6practical.TestApp --deploy-mode client --master spark://ea3c0ba61a6e:7077 --verbose --supervise /docker-app/spark-essentials.jar parijat
+
+./bin/spark-submit --class part6practical.TestApp --deploy-mode cluster --master spark://ea3c0ba61a6e:7077 --verbose --supervise /docker-app/spark-essentials.jar parijat
+
+./bin/spark-submit --class pipackage.JavaSparkPi --deploy-mode cluster --master spark://ea3c0ba61a6e:7077 --verbose --supervise /docker-app/sparkexamples.jar
+
+
+./bin/spark-submit --master spark://f87f4213e738:7077 /docker-app/testfile.py
+
+
+./bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.1 --master spark://4eb46e1ade80:7077 /docker-app/testfile.py
+
+
+./kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic rockthejvm
+
+./kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic stats
+
+./kafka-console-producer.sh --broker-list localhost:9092 --topic rockthejvm
+
+./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic rockthejvm
+
+docker inspect c9fa5b98be10 -f "{{json .NetworkSettings.Networks }}"
+
+docker network create external-example
+
+docker-compose -f spark-kafka.yml up
+
+sudo rm -rf ~/bitnami/kafka *
+
+--------------------------
+
+gunicorn app:app -b 0.0.0.0:5000 -w 3 -k gevent
+
+gunicorn app:app -b 0.0.0.0:5000 -w 1 -k gevent
+
+gunicorn app:app -w 1 -k gevent
+
+unicorn app:app -b 0.0.0.0:80 -w 1 -k gevent
+
+--------------------
+
+recover testdisk
+
