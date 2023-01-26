@@ -42,7 +42,7 @@ try:
         # while True:
 
         consumer = KafkaConsumer('stats',
-                                group_id='first-group',
+                                group_id='first-group',auto_offset_reset='latest',enable_auto_commit=True,
                                 bootstrap_servers=['kafka:9092'])
 
         #consumer.printSchema()
@@ -75,11 +75,11 @@ try:
 
             sorted_temp=dict(sorted(temp.items()))
 
-            print('temp:',sorted_temp)
+            # print('temp:',sorted_temp)
 
-            print('str-temp:',json.dumps(temp))
+            # print('going to db:',json.dumps(sorted_temp))
 
-            time.sleep(1)
+            # time.sleep(1)
 
             # bar=[]   
             # for k,v in sorted_temp.items():
@@ -91,10 +91,11 @@ try:
             mycursor.execute('''select json_dict from bar where id=1''')
             result=mycursor.fetchall()
 
-            print('result-inside-loop:',result)
+            print('presently in db:',result)
+            print('going to db:',json.dumps(sorted_temp))
 
             if result:
-                mycursor.execute(f'''update bar set `json_dict`='{json.dumps(temp)}' where id=1''')
+                mycursor.execute(f'''update bar set `json_dict`='{json.dumps(sorted_temp)}' where id=1''')
                 mydb.commit()
 
             time.sleep(1)     

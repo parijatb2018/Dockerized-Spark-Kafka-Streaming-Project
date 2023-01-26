@@ -27,7 +27,7 @@ from pyspark.sql.functions import *
 
 # Create SparkSession 
 spark = SparkSession.builder \
-      .master("local[1]") \
+      .master("local[*]") \
       .appName("SparkByExamples.com") \
       .getOrCreate() 
       # .master("local[1]") \
@@ -66,18 +66,21 @@ spark = SparkSession.builder \
 
 df_kafka = spark.readStream.format("kafka") \
   .option("kafka.bootstrap.servers", "kafka:9092") \
+  .option("startingoffsets", "latest") \
+  .option("failOnDataLoss","false") \
   .option("subscribe", "rockthejvm") \
   .load()
 
   # .option("kafka.bootstrap.servers", "localhost:9092") \
   # .option("kafka.bootstrap.servers", "172.18.0.4:9092") \
   #.option("kafka.bootstrap.servers", "http://kafka:9092") \
+  # https://stackoverflow.com/questions/48797833/spark-structured-streaming-query-always-starts-with-auto-offset-rest-earliest-ev
 
 #df_kafka.show()
 
 df_kafka.printSchema()
 
-time.sleep(1)
+time.sleep(5)
 
 # df_kafka.select(F.col("topic"), F.expr("CAST(key AS STRING) as key"), F.expr("cast(value as string) as actualValue")) \
 # .writeStream \
@@ -110,7 +113,7 @@ df_intermediate=df_kafka.withColumn('nameFirstLetter',substring(expr("cast(value
                  #.orderBy(col('nameCountTotal').desc())
 
 
-# df_stats \
+# df_intermediate \
 # .writeStream \
 # .format("console") \
 # .outputMode("complete") \
@@ -120,6 +123,8 @@ df_intermediate=df_kafka.withColumn('nameFirstLetter',substring(expr("cast(value
 # df_stats.select(col('nameFirstLetter').alias('key').encode('utf-8'),col('nameCountTotal').alias('value').encode('utf-8')).printSchema()
 
 # time.sleep(10)
+
+# writing to another topic in Kafka
 
 df_stats=df_intermediate.select(col('nameFirstLetter').alias('key'),expr('cast(nameCountTotal as string) as value'))
 

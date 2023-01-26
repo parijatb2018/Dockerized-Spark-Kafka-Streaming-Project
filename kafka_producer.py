@@ -33,7 +33,7 @@ d={}
 while True:
 # for name in names:
     name=fake.name()
-    # print(name)
+    print(name)
     name_first_letter=name[0]
     # print(name_first_letter)
     if name_first_letter in d.keys():
@@ -44,7 +44,7 @@ while True:
     print(d_sorted)
     producer.send('rockthejvm',name.encode('utf-8'))
     
-    time.sleep(1)
+    time.sleep(10)
 
 # import os
 

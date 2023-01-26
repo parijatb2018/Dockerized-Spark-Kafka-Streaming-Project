@@ -13,7 +13,7 @@
 ./bin/spark-submit --master spark://f87f4213e738:7077 /docker-app/testfile.py
 
 
-./bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.1 --master spark://4eb46e1ade80:7077 /docker-app/testfile.py
+./bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.1 --master spark://spark-master:7077 /docker-app/testfile.py
 
 
 ./kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic rockthejvm
@@ -40,9 +40,13 @@ gunicorn app:app -b 0.0.0.0:5000 -w 1 -k gevent
 
 gunicorn app:app -w 1 -k gevent
 
-unicorn app:app -b 0.0.0.0:80 -w 1 -k gevent
+gunicorn app:app -b 0.0.0.0:80 -w 1 -k gevent
 
 --------------------
 
 recover testdisk
+
+https://stackoverflow.com/questions/66101466/python-kafka-keep-polling-topic-infinitely
+
+https://kafka-python.readthedocs.io/en/master/apidoc/KafkaConsumer.html
 
