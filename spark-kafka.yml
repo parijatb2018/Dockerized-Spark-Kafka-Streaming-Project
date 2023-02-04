@@ -137,7 +137,7 @@ services:
     networks:
       - common-network
     volumes: 
-      - ~/scala/custom-docker-compose/flask:/app
+      - ~/scala/custom-docker-compose/flask_app:/app
   
   mysql:
     image: mysql
