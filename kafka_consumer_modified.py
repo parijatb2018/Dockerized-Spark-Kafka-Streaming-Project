@@ -1,35 +1,3 @@
-# import time
-# from kafka import KafkaConsumer
-
-# consumer = KafkaConsumer(
-#      bootstrap_servers=['kafka:9092'],
-#      auto_offset_reset='earliest',
-#      group_id='my-consumer-1',
-# )
-# consumer.subscribe(['rockthejvm'])
-
-# while True:
-#     try: 
-#         message = consumer.poll(timeout_ms=1000)
-
-#         if not message:
-#             print('no message received')
-#             time.sleep(20) # Sleep for 2 minutes
-
-#         if message.error():
-#             print(f"Consumer error: {message.error()}")
-#             continue
-
-#         print(f"Received message: {message.value().decode('utf-8')}")
-#     except Exception as e:
-#         print(e)
-#         continue
-#         # Handle any exception here
-
-#     # finally:
-#     #     consumer.close()
-#     #     print("Goodbye")
-
 
 from kafka import KafkaConsumer
 
