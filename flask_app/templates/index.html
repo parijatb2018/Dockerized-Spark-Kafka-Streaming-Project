@@ -41,9 +41,7 @@
 		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
 		crossorigin="anonymous"></script>
 	<!-- Custom JS -->
-	<!-- <script src="js/main.js"></script> -->
 
-	<!-- <script src="{{ url_for('static', filename='js/index.js') }}"></script> -->
 	<!-- <script src="{{ url_for('static', filename='js/update.js') }}"></script> -->
 
 	<script>
@@ -63,24 +61,6 @@
 
 		const gg= g.append('g')
 
-		// X label
-		// g.append("text")
-		// 	.attr("class", "x axis-label")
-		// 	.attr("x", WIDTH / 2)
-		// 	.attr("y", HEIGHT + 50)
-		// 	.attr("font-size", "20px")
-		// 	.attr("text-anchor", "middle")
-		// 	.text("Month")
-
-		// Y label
-		// g.append("text")
-		// 	.attr("class", "y axis-label")
-		// 	.attr("x", - (HEIGHT / 2))
-		// 	.attr("y", -60)
-		// 	.attr("font-size", "20px")
-		// 	.attr("text-anchor", "middle")
-		// 	.attr("transform", "rotate(-90)")
-		// 	.text("Revenue ($)")
 
 			const x = d3.scaleBand()
 			.range([0, WIDTH])
@@ -97,83 +77,9 @@
 			const yAxisGroup = g.append("g")
 			.attr("class", "y axis")
 
-
-
-
 	</script>
 
-
-
-	<script>
-
-		// const barChartDataUrl = "{{ url_for('get_barchart_data') }}";
-		// const urls = [barChartDataUrl];
-
-		// Promise.all(urls.map(url => d3.json(url))).then(run);
-
-		// function run(dataset) {
-
-		// 	data =dataset[0]
-			// d3PieChart(dataset[0], dataset[1]);
-			// d3BarChart(dataset[0]);
-		
-		// Promise.all(urls.map(url => d3.json(url))).then(dataset=>{
-
-		// data=dataset[0]
-
-		
-		// // d3.csv("data/revenues.csv").then(data => {
-		// //     data.forEach(d => {
-		// //         d.revenue = Number(d.revenue)
-		// //     })
-
-		// console.log(data)
-
-		// console.log(HEIGHT)
-
-		// const x = d3.scaleBand()
-		// 	.domain(data.map(d => d.key))
-		// 	.range([0, WIDTH])
-		// 	.paddingInner(0.3)
-		// 	.paddingOuter(0.2)
-
-		// const y = d3.scaleLinear()
-		// 	.domain([0, d3.max(data, d => d.value)])
-		// 	.range([HEIGHT, 0])
-
-		// const xAxisCall = d3.axisBottom(x)
-		// g.append("g")
-		// 	.attr("class", "x axis")
-		// 	.attr("transform", `translate(0, ${HEIGHT})`)
-		// 	.call(xAxisCall)
-		// 	.selectAll("text")
-		// 	.attr("y", "10")
-		// 	.attr("x", "-5")
-		// 	.attr("text-anchor", "end")
-		// 	.attr("transform", "rotate(-40)")
-
-		// const yAxisCall = d3.axisLeft(y)
-		// 	.ticks(3)
-		// 	.tickFormat(d => d + "m")
-		// g.append("g")
-		// 	.attr("class", "y axis")
-		// 	.call(yAxisCall)
-
-		// const rects = g.selectAll("rect")
-		// 	.data(data)
-
-		// rects.enter().append("rect")
-		// 	.attr("y", d => y(d.value))
-		// 	.attr("x", (d) => x(d.key))
-		// 	.attr("width", x.bandwidth)
-		// 	.attr("height", d => HEIGHT - y(d.value))
-		// 	// .attr("height", d => HEIGHT)
-		// 	.attr("fill", "grey")
-		// 	});
-
-	</script>
-
-
+<!-- d3.js dynamic block-->
 	<script>
 		d3.interval(() => {
 
@@ -189,12 +95,6 @@
 			const barChartDataUrl = "{{ url_for('get_barchart_data') }}";
 			const urls = [barChartDataUrl];
 
-			// Promise.all(urls.map(url => d3.json(url))).then(run);
-
-			// function run(dataset) {
-			// 	// d3PieChart(dataset[0], dataset[1]);
-			// 	updateD3BarChart(dataset[0]);
-			// };
 			Promise.all(urls.map(url => d3.json(url))).then(dataset=>{
 
 				data=dataset[0]
@@ -204,50 +104,15 @@
 				x.domain(data.map(d => d.key))
 				y.domain([0, d3.max(data, d => d.value)])
 
-				// const xAxisCall = d3.axisBottom(x)
-				// xAxisGroup.transition(t).call(xAxisCall)
-				// 	.selectAll("text")
-				// 	.attr("y", "10")
-				// 	.attr("x", "-5")
-				// 	.attr("text-anchor", "end")
-				// 	.attr("transform", "rotate(-40)")
 
-
-				// const yAxisCall = d3.axisLeft(y)
-				// 	.ticks(3)
-				// 	.tickFormat(d => d + "m")
-				// yAxisGroup.transition(t).call(yAxisCall)
-
-				// JOIN new data with old elements.
+				//data binding for rectangles- barchart	
 				const rects = g.selectAll("rect")
 					.data(data, d => d.key)
-					// .attr("class", "bar")
 
-				// //Adding  barchart labels
-				// g.selectAll('text')
-				// 	.data(data)
-				// 	.enter()
-				// 	.append("text")
-				// 	.text(function(d) {
-				// 			return d.value;
-				// 	})
-				// 	.attr("text-anchor", "middle")
-
-				// 	.attr("x", function(d, i) {
-				// 			return (i * (WIDTH / d.length)) + ((WIDTH / d.length - barPadding) / 2);
-				// 	})
-				// 	.attr("y", function(d) {
-				// 			return (yScale(d.value)); //Setting the Y axis to represent the value in the served JSON data
-				// 	})
-				// 	.attr("class", "yAxis");
-
-				// rects.join('rects')
-				// .attr("x", (d) => x(d.key))
-				// .attr("width", x.bandwidth)
-				// .attr("y", d => y(d.value))
-				// .attr("height", d => HEIGHT - y(d.value))
 
 				console.log(x.bandwidth())
+
+				// usage of OLD> enter,update, exit methods
 
 
 				// EXIT old elements not present in new data.
@@ -272,12 +137,13 @@
 					.attr("y", d => y(d.value))
 					.attr("height", d => HEIGHT - y(d.value))
 
+				// data binding for bar top labels 
+				// usage of new JOIN method
+
 				gg.raise().selectAll('text')
 				.data(data)
 				.join(
 					(enter) => enter.append('text')
-					// .attr("x", d => x(d.key)+x.bandwidth()/2)
-					// .attr("x", d => x(d.key)+x.bandwidth()/4)
 					.attr("x", d => x(d.key))
 					.attr('y', HEIGHT)
 					.text(d=>d.value),
@@ -293,41 +159,6 @@
 				// .attr('fill','white')
 				.text(d=>d.value)
 				
-
-
-					// gg.selectAll('text')
-					// .data(data).enter()
-					// .append('text')
-					// .attr("x", (d) => x(d.key))
-					// .attr("y", d => y(d.value) +5)
-					// .merge(gg)
-					// .transition(t)
-					// .attr("x", (d) => x(d.key))
-					// .attr("y", d => y(d.value) +5)
-					// // .style('color','blue')
-					// .text(d=>d.value)
-
-					// gg.exit()
-					// .transition(t)
-					// .attr("x", (d) => x(d.key))
-					// .attr("y", d => y(d.value) +5)
-					// .remove()
-					// .join('text')
-					// .join(
-					// 		(enter) => enter.append('text')
-					// 		.attr("x", (d) => x(d.key))
-					// 		.attr("y", d => y(d.value) +5)
-					// 		.text(d=>d.value),
-					// 		(update) => update,
-					// 		(exit) => exit.transition(t)
-					// 		.attr('y', y(0))
-					// 		.remove()
-					// 	)
-					// .transition(t)
-					// // .attr("x", (d) => x(d.key))
-					// // .attr("y", d => y(d.value) +5)
-					// .text(d=>d.value)
-					// .attr("text-anchor", "middle")
 
 				const xAxisCall = d3.axisBottom(x)
 				xAxisGroup.transition(t).call(xAxisCall)
