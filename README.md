@@ -13,6 +13,16 @@ This project is conceptualized with a thought to be used in census or any type o
 In this project stress has been put to make it as a highly reusable template project that can be used as a base and on top of that any customization or scaling can be done. The DevOps part consumes a lot of time initially in a project so it can be substantally reduced using such a template.
 The containerized approach is taken to spin everything quickly and faster building and troubleshooting.
 
+### Stack used[so far]
+1. Spark3.3[bitnami image]
+2. Kafka3.3[bitnami image]
+3. zookeeper3.8[bitnami image]
+4. Python3.8
+5. Flask 2.0.2
+6. Unbutu 20.4
+7. MySql 8.0
+8. d3.js v5 min
+
 ## Future targets
 1. To scale the project to handle faster producer feed[multithreading]
 2. Kafka scaling and better producer and consumer tuning
