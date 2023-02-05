@@ -38,7 +38,10 @@ The containerized approach is taken to spin everything quickly and faster buildi
 
 <img width="1345" alt="Screen Shot 2023-02-04 at 8 34 45 PM" src="https://user-images.githubusercontent.com/43022026/216797259-a91f724d-4a7c-4911-b221-d220e6757ab3.png">
 
-Notice the lag in the result from producer to the dashboard
+Top terminal> Producer
+Middle terminal> stats topic consumer
+D3.js real time dashbiard
+#### Notice the lag in the result from producer to the dashboard
 
 ## The below GIF shows the realtime dashboard animation[a duration of 30s]
 
