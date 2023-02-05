@@ -1,8 +1,8 @@
 # Dockerized-Spark-Kafka-Streaming-Project
 
-## project Conceptualization and Targets
+## Project Conceptualization and Targets
 ### Conceptualization:
-This is a completely dockerized project where in every 10 seconds a new random name of a person is produced using a Python KAFKA producer and then it's fed to a KAFKA topic called 'rockthejvm' and then the topic is read by a PYSPARK-KAFKA consumer using Spark streaming[or microbatching] and an aggregation is done on the first alphabets of the names and for an one day window and then a count operation is done to find a list of alphabets and their counts. The aggregation result is subsequently fed and updated by the SPARK streaming to a KAFKA topic called stats. 
+This is a completely dockerized project where in every 10 seconds a new random name of a person is produced using a Python KAFKA producer and then it's fed to a KAFKA topic called 'rockthejvm' and then the topic is read by a PYSPARK-KAFKA consumer using Spark streaming[or microbatching] and an aggregation is done on the first alphabets of the names and for a one day window and then a count operation is done to find a list of alphabets and their counts. The aggregation result is subsequently fed and updated by the SPARK streaming to a KAFKA topic called 'stats'. 
 
 The result is then consumed by a python-Kafka consumer and the results are written/updated on a mysql databse continiously.
 
@@ -10,9 +10,9 @@ At last a Flask App and d3.js library is used to read the data from mysql databa
 
 This project is conceptualized with a thought to be used in census or any type of statistical counting for a period and seeing the changes in realtime.
 
-## Targets
-1. In this project stress has been put to make it as a highly reusable template project that can be used as a base and on top of that any customization or scaling can be done. The DevOps part consumes a lot of time initially in a project so it can be substantally reduced using such a template.
-2. The containerized approach is taken to spin everything quickly and faster building and troubleshooting.
+In this project stress has been put to make it as a highly reusable template project that can be used as a base and on top of that any customization or scaling can be done. The DevOps part consumes a lot of time initially in a project so it can be substantally reduced using such a template.
+The containerized approach is taken to spin everything quickly and faster building and troubleshooting.
+
 ## Future targets
 1. To scale the project to handle faster producer feed[multithreading]
 2. Kafka scaling and better producer and consumer tuning
@@ -29,6 +29,6 @@ This project is conceptualized with a thought to be used in census or any type o
 
 Notice the lag in the result from producer to the dashboard
 
-## The below GIF shows the realtime dashboard animation
+## The below GIF shows the realtime dashboard animation[a duration of 30s]
 
 ![Feb-04-2023 21-43-34](https://user-images.githubusercontent.com/43022026/216797340-11dcae82-c0e9-4725-85a1-579c1fd2c0df.gif)
