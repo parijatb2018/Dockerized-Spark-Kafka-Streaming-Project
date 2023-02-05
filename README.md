@@ -22,6 +22,7 @@ The containerized approach is taken to spin everything quickly and faster buildi
 6. Unbutu 20.4
 7. MySql 8.0
 8. d3.js v5 min
+9. gunicorn 20.1.0
 
 ## Future targets
 1. To scale the project to handle faster producer feed[multithreading]
